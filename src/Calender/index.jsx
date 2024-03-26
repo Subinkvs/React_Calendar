@@ -1,19 +1,43 @@
-import { CalenderHead,SevenColGrid,Wrapper, HeadDay, StyledDay, CalenderBody } from "./styled"
+import { CalenderHead,SevenColGrid,Wrapper, HeadDay, StyledDay, CalenderBody, StyledEvent } from "./styled"
 import { MONTHS, DAYS } from "./conts"
-import { areDatesTheSame, getDateObj, getDaysInMonth, getSortedDays, range } from "./utilis"
+import { areDatesTheSame, getDateObj, getDaysInMonth, getRandomDarkColor, getSortedDays, range } from "./utilis"
 import { useState } from "react"
 
-export const Calender = ({startingDate}) =>{
+export const Calender = ({startingDate, eventsArr, addEvent}) =>{
     const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth())
     const [currentYear, setCurrentYear] = useState(startingDate.getFullYear())
     const DAYSINMONTH = getDaysInMonth(currentMonth, currentYear)
 
+    const nextMonth = () => {
+        if( currentMonth < 11) {
+            setCurrentMonth( (prev) => prev + 1);
+        }
+        else{
+            setCurrentMonth(0);
+            setCurrentYear( (prev) => prev + 1)
+        }
+    };
+    const prevMonth = () => {
+        if( currentMonth > 0){
+            setCurrentMonth((prev) => prev - 1)
+        }
+        else{
+            setCurrentMonth(11)
+            setCurrentYear((prev) => prev - 1)
+        }
+    };
+
+    const onAddEvent = (date) => {
+        addEvent(date, getRandomDarkColor());
+
+    }
+
     return(
         <Wrapper>
         <CalenderHead>
-        <ion-icon name="arrow-back-outline"></ion-icon>
+        <ion-icon onClick={prevMonth}  name="arrow-back-outline"></ion-icon>
         <p>{MONTHS[currentMonth]} {currentYear}</p>
-        <ion-icon name="arrow-forward-outline"></ion-icon>
+        <ion-icon onClick={nextMonth} name="arrow-forward-outline"></ion-icon>
         </CalenderHead>
         <SevenColGrid>
             {getSortedDays(currentMonth, currentYear).map((day) => (
@@ -24,11 +48,18 @@ export const Calender = ({startingDate}) =>{
             <CalenderBody fourCol = {DAYSINMONTH === 28}>
                 {range(DAYSINMONTH).map((day) => (
                     <StyledDay
+                    onClick={() => onAddEvent(getDateObj(day, currentMonth, currentYear))}
                     active = {areDatesTheSame(
                         new Date(),
                         getDateObj(day, currentMonth, currentYear)
                     )}
-                    >{day}</StyledDay>
+                    ><p>{day}</p>
+                    {eventsArr.map(
+                        (ev) =>
+                        areDatesTheSame(
+                            getDateObj(day, currentMonth, currentYear), ev.date)
+                            && <StyledEvent>{ev.title}</StyledEvent>)}
+                    </StyledDay>
                     ))}
             </CalenderBody>
        

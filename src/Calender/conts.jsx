@@ -14,3 +14,9 @@ export const MONTHS = [
     "November",
     "December"
 ];
+
+export const MOCKEVENTS = [
+    {date: new Date(2023, 9, 10), title:"Bike Service"},
+    {date: new Date(2023, 9, 15), title: "appointment"},
+    {date: new Date(2024, 2, 29), title: "Movie"}
+];

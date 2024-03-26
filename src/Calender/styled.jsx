@@ -41,3 +41,13 @@ text-align : right;
 padding: 5px;
 ${({active}) => active && `background: pink`};
 `;
+
+export const StyledEvent = styled.div`
+display: grid;
+text-align: left;
+background: darkblue;
+color: white;
+padding: 2px 5px;
+border-radius: 8px;
+
+`;
