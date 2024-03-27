@@ -47,6 +47,7 @@ display: grid;
 text-align: left;
 background: darkblue;
 color: white;
+margin-top: 5px;
 padding: 2px 5px;
 border-radius: 8px;
 
